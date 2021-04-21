@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.XR.Management;
-using System.IO;
+using UnityEditor;
 
-namespace UnityEditor.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     /// <summary>
-    /// Holds settings that are used to configure the Unity XRMock Plugin.
+    /// Holds settings that are used to configure the XRMock Plugin.
     /// </summary>
     [System.Serializable]
     [XRConfigurationData("XRMock", "UnityEditor.XR.Mock.XRMockSettings")]

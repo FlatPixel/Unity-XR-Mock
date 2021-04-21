@@ -1,6 +1,7 @@
+using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     public static class AnchorApi
     {

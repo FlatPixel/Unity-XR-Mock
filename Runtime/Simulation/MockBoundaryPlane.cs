@@ -1,12 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.Profiling;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
-    public class SimulatePlanesUsingHull : MonoBehaviour
+    [ExecuteInEditMode]
+    public class MockBoundaryPlane : MockTrackable
     {
+        Mesh m_mesh;
+        MeshFilter m_meshFilter = null;
+
         [SerializeField]
         float m_Radius = 1f;
 
@@ -68,8 +73,15 @@ namespace UnityEngine.XR.Mock.Example
             return convexHull.ToArray();
         }
 
+        void Awake()
+        {
+            m_mesh = new Mesh();
+        }
+
         IEnumerator Start()
         {
+            m_meshFilter = GetComponent<MeshFilter>();
+
             var points = new Vector2[m_NumPoints];
             var velocities = new Vector2[m_NumPoints];
 
@@ -80,6 +92,10 @@ namespace UnityEngine.XR.Mock.Example
             }
 
             var planeId = PlaneApi.Add(pose, GenerateConvexHull(points));
+
+            if (m_meshFilter != null)
+                if (ARPlaneMeshGenerators.GenerateMesh(m_mesh, new Pose(transform.localPosition, transform.localRotation), NativeApi.planes[planeId].boundaryPoints))
+                    m_meshFilter.sharedMesh = m_mesh;
 
             while (enabled)
             {
@@ -112,7 +128,5 @@ namespace UnityEngine.XR.Mock.Example
                 yield return null;
             }
         }
-
-        Pose pose { get { return new Pose(transform.position, transform.rotation); } }
     }
 }

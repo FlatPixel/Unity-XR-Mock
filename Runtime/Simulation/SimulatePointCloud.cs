@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
     public class SimulatePointCloud : MonoBehaviour
     {

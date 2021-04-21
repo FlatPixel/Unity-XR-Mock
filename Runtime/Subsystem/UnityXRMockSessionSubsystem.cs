@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     [Preserve]
     public sealed class UnityXRMockSessionSubsystem : XRSessionSubsystem

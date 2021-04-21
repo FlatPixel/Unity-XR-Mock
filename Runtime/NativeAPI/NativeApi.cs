@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     /// <summary>
     /// Provides functionality to inject data into the XRMock provider.
@@ -30,6 +31,8 @@ namespace UnityEngine.XR.Mock
 
         public static void UnityXRMock_setPose(Pose pose, Matrix4x4 transform)
         {
+            if (Camera.main == null) return;
+
             Camera.main.transform.localPosition = pose.position;
             Camera.main.transform.localRotation = pose.rotation;
             Camera.main.transform.localScale = transform.lossyScale;

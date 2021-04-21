@@ -1,10 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     [Preserve]
     public sealed class UnityXRMockCameraSubsystem : XRCameraSubsystem

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     public static class SessionApi
     {
@@ -23,7 +23,7 @@ namespace UnityEngine.XR.Mock
             if (_arMockEditor == null)
                 _arMockEditorPrefab = (GameObject)UnityEditor.AssetDatabase.LoadAssetAtPath("Packages/com.flatpixel.xr-mock/Runtime/Simulation/Prefabs/AR Mock Editor.prefab", typeof(GameObject));
 
-            _arMockEditor = UnityEngine.Object.Instantiate(_arMockEditorPrefab);
+            _arMockEditor = Object.Instantiate(_arMockEditorPrefab);
             _arMockEditor.SetActive(true);
 
             return true;
@@ -32,7 +32,7 @@ namespace UnityEngine.XR.Mock
         public static bool Stop()
         {
             Debug.Log("XRMock::Stop Session");
-            UnityEngine.Object.Destroy(_arMockEditor);
+            Object.Destroy(_arMockEditor);
             _arMockEditor = null;
 
             return false;

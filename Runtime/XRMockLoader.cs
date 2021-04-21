@@ -1,8 +1,10 @@
+using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.XR;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.Management;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     /// <summary>
     /// Manages the lifecycle of XRMock subsystems.

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
     /// <summary>
     /// Performs a raycast against AR Trackables and invokes an event when a hit is detected.

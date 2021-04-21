@@ -1,6 +1,7 @@
 using System;
+using UnityEngine;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     public static class DepthApi
     {

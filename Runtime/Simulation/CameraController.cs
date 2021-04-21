@@ -1,4 +1,6 @@
-﻿namespace UnityEngine.XR.Mock.Example
+﻿using UnityEngine;
+
+namespace FlatPixel.XR.Mock.Example
 {
     public class CameraController : MonoBehaviour
     {

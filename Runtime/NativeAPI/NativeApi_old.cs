@@ -395,7 +395,7 @@ namespace UnityEngine.XR.Mock
 
         private static void LogNotImplemented([CallerMemberName] string memberName = "")
         {
-            Debug.LogError($"{nameof(NativeApi)}.{memberName} not implemented");
+            Debug.LogError($"{nameof(NativeApi_old)}.{memberName} not implemented");
         }
     }
 }

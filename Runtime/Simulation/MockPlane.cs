@@ -1,9 +1,10 @@
 ﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
-    public class SimulatePlanes : MonoBehaviour
+    public class SimulatePlanes : MockTrackable
     {
         [SerializeField]
         bool m_Rotate;
@@ -42,7 +43,5 @@ namespace UnityEngine.XR.Mock.Example
                 yield return null;
             }
         }
-
-        Pose pose { get { return new Pose(transform.localPosition, transform.localRotation); } }
     }
 }

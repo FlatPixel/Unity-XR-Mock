@@ -1,6 +1,7 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
     public class FingerIndicator : MonoBehaviour
     {

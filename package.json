@@ -1,6 +1,6 @@
 {
   "name": "com.flatpixel.xr-mock",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "displayName": "XR Mock",
   "description": "The in-editor AR simulation that Unity has (n)ever made...",
   "unity": "2019.4",
@@ -9,6 +9,18 @@
     "com.unity.xr.arsubsystems": "3.1.0",
     "com.unity.xr.management": "3.2.13"
   },
+  "samples": [
+    {
+      "displayName": "Horizontal and vertical planes tracking sample",
+      "description": "Show a sample scene with horizontal and vertical planes tracking",
+      "path": "Samples~/HorizontalAndVerticalPlanes"
+    },
+    {
+      "displayName": "Faces tracking sample",
+      "description": "Show a sample scene with faces tracking",
+      "path": "Samples~/Faces"
+    }
+  ],
   "keywords": [
     "Augmented Reality",
     "AR",

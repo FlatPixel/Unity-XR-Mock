@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.Experimental;
-using UnityEngine.Experimental.XR;
+using UnityEngine;
 using UnityEditor;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
     static class ListSessionDescriptors
     {

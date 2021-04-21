@@ -1,6 +1,7 @@
+using UnityEngine;
 using UnityEngine.XR.Management;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     [System.Serializable]
     public class XRMockLoaderSettings : ScriptableObject

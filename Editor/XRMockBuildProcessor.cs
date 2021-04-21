@@ -6,7 +6,7 @@ using UnityEditor.Build.Reporting;
 
 using UnityEngine.XR.Mock;
 
-namespace UnityEditor.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     /// <summary>
     /// Simple build processor that makes sure that any custom configuration that the user creates is

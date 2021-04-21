@@ -1,4 +1,6 @@
-namespace UnityEngine.XR.Mock
+using UnityEngine;
+
+namespace FlatPixel.XR.Mock
 {
     public static class InputApi
     {

@@ -1,6 +1,7 @@
-﻿using UnityEngine.XR.ARFoundation;
+﻿using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
     [RequireComponent(typeof(Raycaster))]
     public class MakeObjectAppearAtRaycastHit : MonoBehaviour

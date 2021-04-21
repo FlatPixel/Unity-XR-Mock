@@ -1,4 +1,4 @@
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     /// <summary>
     /// Static constants

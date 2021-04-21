@@ -1,9 +1,10 @@
 using System.Linq;
 using Unity.Collections;
+using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     [Preserve]
     public sealed class UnityXRMockPlaneSubsystem : XRPlaneSubsystem

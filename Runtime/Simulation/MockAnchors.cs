@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.ARFoundation;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
     public class SimulateAnchors : MonoBehaviour
     {

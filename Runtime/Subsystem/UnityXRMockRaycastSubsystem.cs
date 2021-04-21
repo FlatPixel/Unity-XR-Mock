@@ -1,8 +1,9 @@
 using Unity.Collections;
+using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.ARFoundation;
 
-namespace UnityEngine.XR.Mock
+namespace FlatPixel.XR.Mock
 {
     public sealed class UnityXRMockRaycastSubsystem : XRRaycastSubsystem
     {
@@ -31,10 +32,10 @@ namespace UnityEngine.XR.Mock
             public override void Start()
             {
                 m_ARSessionOrigin = Object.FindObjectOfType<ARSessionOrigin>();
-                Assertions.Assert.IsNotNull(m_ARSessionOrigin);
+                //Assertions.Assert.IsNotNull(m_ARSessionOrigin);
 
                 m_mainCam = Camera.main;
-                Assertions.Assert.IsNotNull(m_mainCam);
+                //Assertions.Assert.IsNotNull(m_mainCam);
             }
 
             public override NativeArray<XRRaycastHit> Raycast(XRRaycastHit defaultRaycastHit, Ray ray, TrackableType trackableTypeMask, Allocator allocator)

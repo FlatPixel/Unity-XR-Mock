@@ -1,6 +1,8 @@
-﻿using UnityEngine.XR.ARSubsystems;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.XR.ARSubsystems;
 
-namespace UnityEngine.XR.Mock.Example
+namespace FlatPixel.XR.Mock.Example
 {
     public class SimulateSession : MonoBehaviour
     {
@@ -8,7 +10,7 @@ namespace UnityEngine.XR.Mock.Example
         TrackingState m_TrackingState = TrackingState.Tracking;
 
         [SerializeField]
-        GameObject[] planes;
+        private List<MockTrackable> m_trackables;
 
         float m_LastTime;
         enum State
@@ -16,12 +18,21 @@ namespace UnityEngine.XR.Mock.Example
             Uninitialized,
             Initialized,
             Paused,
-            WaitingToAddPlane1,
-            WaitingToAddRemainingPlanes,
+            WaitingForFirstTrackable,
+            WaitingToAddRemainingTrackables,
             Finished
         }
 
         State m_State;
+
+        private void Start()
+        {
+            foreach (var trackable in GetComponentsInChildren<MockTrackable>())
+            {
+                trackable.gameObject.SetActive(false);
+                m_trackables.Add(trackable);
+            }
+        }
 
         void Update()
         {
@@ -34,25 +45,24 @@ namespace UnityEngine.XR.Mock.Example
                     m_LastTime = Time.time;
                     break;
                 case State.Initialized:
-                    m_State = State.WaitingToAddPlane1;
+                    m_State = State.WaitingForFirstTrackable;
                     m_LastTime = Time.time;
                     break;
-                case State.WaitingToAddPlane1:
+                case State.WaitingForFirstTrackable:
                     if (Time.time - m_LastTime > 2f)
                     {
-                        planes[0].SetActive(true);
+                        if (m_trackables.Count > 0)
+                            m_trackables[0].gameObject.SetActive(true);
 
-                        m_State = State.WaitingToAddRemainingPlanes;
+                        m_State = State.WaitingToAddRemainingTrackables;
                         m_LastTime = Time.time;
                     }
                     break;
-                case State.WaitingToAddRemainingPlanes:
+                case State.WaitingToAddRemainingTrackables:
                     if (Time.time - m_LastTime > 2f)
                     {
-                        for (int i = 1; i < planes.Length; i++)
-                        {
-                            planes[i].SetActive(true);
-                        }
+                        for (int i = 1; i < m_trackables.Count; i++)
+                            m_trackables[i].gameObject.SetActive(true);
 
                         m_State = State.Finished;
                         m_LastTime = Time.time;
