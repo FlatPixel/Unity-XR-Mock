@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Radius: 1
-  m_Speed: 5
-  m_HullChangeProbability: 0.2
-  m_TrackingLostProbability: 0.01
+  m_Speed: 0.1
+  m_HullChangeProbability: 0
+  m_TrackingLostProbability: 0
   m_NumPoints: 10
 --- !u!114 &5699037891986916769
 MonoBehaviour:
@@ -104,6 +104,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -128,3 +129,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

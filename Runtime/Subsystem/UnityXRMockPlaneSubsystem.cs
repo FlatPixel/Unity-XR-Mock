@@ -17,22 +17,36 @@ namespace FlatPixel.XR.Mock
             XRPlaneSubsystemDescriptor.Create(new XRPlaneSubsystemDescriptor.Cinfo
             {
                 id = ID,
-                subsystemImplementationType = typeof(UnityXRMockPlaneSubsystem),
+                providerType = typeof(MockProvider),
+                subsystemTypeOverride = typeof(UnityXRMockPlaneSubsystem),
                 supportsHorizontalPlaneDetection = true,
                 supportsVerticalPlaneDetection = true,
                 supportsArbitraryPlaneDetection = true,
-                supportsBoundaryVertices = true
+                supportsBoundaryVertices = true,
+                supportsClassification = true
             });
         }
 
-        protected override Provider CreateProvider() => new MockProvider();
-
         private class MockProvider : Provider
         {
+            private PlaneDetectionMode _currentPlaneDetectionMode;
+
+            public override void Start() { }
+
             public override void Destroy()
             {
                 NativeApi.UnityXRMock_planesReset();
             }
+
+            public override void Stop() { }
+
+            public override PlaneDetectionMode requestedPlaneDetectionMode
+            {
+                get => this._currentPlaneDetectionMode;
+                set => this._currentPlaneDetectionMode = value;
+            }
+
+            public override PlaneDetectionMode currentPlaneDetectionMode => this._currentPlaneDetectionMode;
 
             public override void GetBoundary(
                 TrackableId trackableId,
@@ -71,12 +85,6 @@ namespace FlatPixel.XR.Mock
                 {
                     NativeApi.UnityXRMock_consumedPlaneChanges();
                 }
-            }
-
-            public override PlaneDetectionMode requestedPlaneDetectionMode
-            {
-                get { return PlaneDetectionMode.Horizontal & PlaneDetectionMode.Vertical; }
-                set { return; }
             }
         }
     }

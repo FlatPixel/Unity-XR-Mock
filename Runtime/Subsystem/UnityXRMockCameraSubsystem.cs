@@ -19,7 +19,8 @@ namespace FlatPixel.XR.Mock
             var cinfo = new XRCameraSubsystemCinfo
             {
                 id = ID,
-                implementationType = typeof(UnityXRMockCameraSubsystem),
+                providerType = typeof(MockProvider),
+                subsystemTypeOverride = typeof(UnityXRMockCameraSubsystem),
                 supportsAverageBrightness = true,
                 supportsAverageColorTemperature = true,
                 supportsAverageIntensityInLumens = true,
@@ -30,12 +31,15 @@ namespace FlatPixel.XR.Mock
                 supportsFocusModes = false,
                 supportsProjectionMatrix = true,
                 supportsTimestamp = true,
+                supportsCameraGrain = true,
+                supportsFaceTrackingAmbientIntensityLightEstimation = false,
+                supportsFaceTrackingHDRLightEstimation = false,
+                supportsWorldTrackingAmbientIntensityLightEstimation = false,
+                supportsWorldTrackingHDRLightEstimation = false
             };
 
             Register(cinfo);
         }
-
-        protected override Provider CreateProvider() => new MockProvider();
 
         private class MockProvider : Provider
         {

@@ -15,14 +15,14 @@ namespace FlatPixel.XR.Mock
             XRRaycastSubsystemDescriptor.RegisterDescriptor(new XRRaycastSubsystemDescriptor.Cinfo
             {
                 id = "UnityXRMock-Raycast",
-                subsystemImplementationType = typeof(UnityXRMockRaycastSubsystem),
+                providerType = typeof(MockProvider),
+                subsystemTypeOverride = typeof(UnityXRMockRaycastSubsystem),
                 supportedTrackableTypes = TrackableType.PlaneWithinPolygon,
                 supportsViewportBasedRaycast = true,
-                supportsWorldBasedRaycast = true
+                supportsWorldBasedRaycast = true,
+                supportsTrackedRaycasts = true
             });
         }
-
-        protected override Provider CreateProvider() => new MockProvider();
 
         private class MockProvider : Provider
         {
@@ -45,7 +45,7 @@ namespace FlatPixel.XR.Mock
 
                 ray = m_ARSessionOrigin.trackablesParent.TransformRay(ray);
 
-                RaycastHit[] internalHits = Physics.RaycastAll(ray, 100.0f, LayerMask.GetMask("Planes"));
+                RaycastHit[] internalHits = Physics.RaycastAll(ray, 100.0f);
 
                 NativeArray<XRRaycastHit> hits = new NativeArray<XRRaycastHit>(internalHits.Length, allocator);
 
@@ -73,7 +73,7 @@ namespace FlatPixel.XR.Mock
                     return new NativeArray<XRRaycastHit>(0, allocator);
 
                 Ray ray = m_mainCam.ViewportPointToRay(screenPoint);
-                RaycastHit[] internalHits = Physics.RaycastAll(ray, 100.0f, LayerMask.GetMask("Planes"));
+                RaycastHit[] internalHits = Physics.RaycastAll(ray, 100.0f);
 
                 var originTransform = m_ARSessionOrigin.camera != null ? m_ARSessionOrigin.camera.transform : m_ARSessionOrigin.trackablesParent;
 

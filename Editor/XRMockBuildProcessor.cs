@@ -4,8 +4,6 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 
-using UnityEngine.XR.Mock;
-
 namespace FlatPixel.XR.Mock
 {
     /// <summary>
@@ -42,7 +40,7 @@ namespace FlatPixel.XR.Mock
                 return;
 
             var oldSettings = from s in preloadedAssets
-                              where s != null && s.GetType() == typeof(XRMockLoaderSettings)
+                              where s != null && s.GetType() == typeof(UnityXRMockLoaderSettings)
                               select s;
 
             if (oldSettings != null && oldSettings.Any())

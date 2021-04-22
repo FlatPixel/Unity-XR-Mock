@@ -7,7 +7,7 @@ namespace FlatPixel.XR.Mock.Example
     public class SimulateSession : MonoBehaviour
     {
         [SerializeField]
-        TrackingState m_TrackingState = TrackingState.Tracking;
+        TrackingState m_TrackingState = TrackingState.None;
 
         [SerializeField]
         private List<MockTrackable> m_trackables;
@@ -27,7 +27,9 @@ namespace FlatPixel.XR.Mock.Example
 
         private void Start()
         {
-            foreach (var trackable in GetComponentsInChildren<MockTrackable>())
+            m_trackables = new List<MockTrackable>();
+
+            foreach (var trackable in GetComponentsInChildren<MockTrackable>(true))
             {
                 trackable.gameObject.SetActive(false);
                 m_trackables.Add(trackable);
@@ -46,6 +48,7 @@ namespace FlatPixel.XR.Mock.Example
                     break;
                 case State.Initialized:
                     m_State = State.WaitingForFirstTrackable;
+                    m_TrackingState = TrackingState.Limited;
                     m_LastTime = Time.time;
                     break;
                 case State.WaitingForFirstTrackable:
@@ -65,6 +68,7 @@ namespace FlatPixel.XR.Mock.Example
                             m_trackables[i].gameObject.SetActive(true);
 
                         m_State = State.Finished;
+                        m_TrackingState = TrackingState.Tracking;
                         m_LastTime = Time.time;
                     }
                     break;
