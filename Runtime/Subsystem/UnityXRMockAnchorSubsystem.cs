@@ -20,11 +20,19 @@ namespace FlatPixel.XR.Mock
             XRAnchorSubsystemDescriptor.Create(new XRAnchorSubsystemDescriptor.Cinfo
             {
                 id = ID,
+#if UNITY_2020_2_OR_NEWER
                 providerType = typeof(MockProvider),
                 subsystemTypeOverride = typeof(UnityXRMockAnchorSubsystem),
+#else
+                subsystemImplementationType = typeof(UnityXRMockAnchorSubsystem),
+#endif
                 supportsTrackableAttachments = true
             });
         }
+
+#if !UNITY_2020_2_OR_NEWER
+        protected override Provider CreateProvider() => new MockProvider();
+#endif
 
         private class MockProvider : Provider
         {

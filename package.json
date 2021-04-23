@@ -1,6 +1,6 @@
 {
   "name": "com.flatpixel.xr-mock",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "displayName": "XR Mock",
   "description": "The in-editor AR simulation that Unity has (n)ever made...",
   "unity": "2019.4",
@@ -19,6 +19,11 @@
       "displayName": "Faces tracking sample",
       "description": "Show a sample scene with faces tracking",
       "path": "Samples~/Faces"
+    },
+    {
+      "displayName": "Simulation scene samples",
+      "description": "Samples scenes with simulated XR environments",
+      "path": "Samples~/ScenesSimulation"
     }
   ],
   "keywords": [

@@ -17,8 +17,12 @@ namespace FlatPixel.XR.Mock
             XRPlaneSubsystemDescriptor.Create(new XRPlaneSubsystemDescriptor.Cinfo
             {
                 id = ID,
+#if UNITY_2020_2_OR_NEWER
                 providerType = typeof(MockProvider),
                 subsystemTypeOverride = typeof(UnityXRMockPlaneSubsystem),
+#else
+                subsystemImplementationType = typeof(UnityXRMockPlaneSubsystem),
+#endif
                 supportsHorizontalPlaneDetection = true,
                 supportsVerticalPlaneDetection = true,
                 supportsArbitraryPlaneDetection = true,
@@ -26,6 +30,10 @@ namespace FlatPixel.XR.Mock
                 supportsClassification = true
             });
         }
+
+#if !UNITY_2020_2_OR_NEWER
+        protected override Provider CreateProvider() => new MockProvider();
+#endif
 
         private class MockProvider : Provider
         {

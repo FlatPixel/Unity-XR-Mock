@@ -19,8 +19,12 @@ namespace FlatPixel.XR.Mock
             var cinfo = new XRCameraSubsystemCinfo
             {
                 id = ID,
+#if UNITY_2020_2_OR_NEWER
                 providerType = typeof(MockProvider),
                 subsystemTypeOverride = typeof(UnityXRMockCameraSubsystem),
+#else
+                implementationType = typeof(UnityXRMockCameraSubsystem),
+#endif
                 supportsAverageBrightness = true,
                 supportsAverageColorTemperature = true,
                 supportsAverageIntensityInLumens = true,
@@ -41,6 +45,9 @@ namespace FlatPixel.XR.Mock
             Register(cinfo);
         }
 
+#if !UNITY_2020_2_OR_NEWER
+        protected override Provider CreateProvider() => new MockProvider();
+#endif
         private class MockProvider : Provider
         {
             private XRCameraParams cameraParams;

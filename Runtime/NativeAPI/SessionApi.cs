@@ -30,7 +30,7 @@ namespace FlatPixel.XR.Mock
             //_arMockEditor.SetActive(true);
 
             LoadSceneParameters sceneParams = new LoadSceneParameters(LoadSceneMode.Additive);
-            _arMockSimulationScene = EditorSceneManager.LoadSceneInPlayMode("Packages/com.flatpixel.xr-mock/Samples/ScenesSimulation/HorizontalAndVerticalPlanesSimulation.unity", sceneParams);
+            _arMockSimulationScene = EditorSceneManager.LoadSceneInPlayMode("Packages/com.flatpixel.xr-mock/Runtime/Simulation/Scene/DefaultSimulationScene.unity", sceneParams);
             return true;
         }
 

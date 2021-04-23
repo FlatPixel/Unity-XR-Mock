@@ -6,7 +6,7 @@ namespace FlatPixel.XR.Mock
     /// <summary>
     /// Settings to control the UnityXRMockLoader behavior.
     /// </summary>
-    [XRConfigurationData("UnityXRMock/Loader", XRMockLoaderConstants.k_SettingsKey)]
+    [XRConfigurationData("XRMock", XRMockLoaderConstants.k_SettingsKey)]
     [System.Serializable]
     public class UnityXRMockLoaderSettings : ScriptableObject
     {

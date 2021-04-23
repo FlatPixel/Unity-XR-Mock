@@ -15,14 +15,22 @@ namespace FlatPixel.XR.Mock
             XRRaycastSubsystemDescriptor.RegisterDescriptor(new XRRaycastSubsystemDescriptor.Cinfo
             {
                 id = "UnityXRMock-Raycast",
+#if UNITY_2020_2_OR_NEWER
                 providerType = typeof(MockProvider),
                 subsystemTypeOverride = typeof(UnityXRMockRaycastSubsystem),
+#else
+                subsystemImplementationType = typeof(UnityXRMockRaycastSubsystem),
+#endif
                 supportedTrackableTypes = TrackableType.PlaneWithinPolygon,
                 supportsViewportBasedRaycast = true,
                 supportsWorldBasedRaycast = true,
                 supportsTrackedRaycasts = true
             });
         }
+
+#if !UNITY_2020_2_OR_NEWER
+        protected override Provider CreateProvider() => new MockProvider();
+#endif
 
         private class MockProvider : Provider
         {

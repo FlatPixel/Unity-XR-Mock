@@ -16,12 +16,20 @@ namespace FlatPixel.XR.Mock
             XRSessionSubsystemDescriptor.RegisterDescriptor(new XRSessionSubsystemDescriptor.Cinfo
             {
                 id = ID,
+#if UNITY_2020_2_OR_NEWER
                 providerType = typeof(MockProvider),
                 subsystemTypeOverride = typeof(UnityXRMockSessionSubsystem),
+#else
+                subsystemImplementationType = typeof(UnityXRMockSessionSubsystem),
+#endif
                 supportsInstall = false,
                 supportsMatchFrameRate = false
             });
         }
+
+#if !UNITY_2020_2_OR_NEWER
+        protected override Provider CreateProvider() => new MockProvider();
+#endif
 
         private class MockProvider : Provider
         {
