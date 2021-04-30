@@ -55,14 +55,21 @@ namespace FlatPixel.XR.Mock
 
                 RaycastHit[] internalHits = Physics.RaycastAll(ray, 100.0f);
 
-                NativeArray<XRRaycastHit> hits = new NativeArray<XRRaycastHit>(internalHits.Length, allocator);
+                int nbARPlane = 0;
+                for (int i = 0; i < internalHits.Length; ++i)
+                    if (internalHits[i].transform.GetComponent<ARPlane>() != null)
+                        nbARPlane++;
 
                 var originTransform = m_ARSessionOrigin.camera != null ? m_ARSessionOrigin.camera.transform : m_ARSessionOrigin.trackablesParent;
+
+                NativeArray<XRRaycastHit> hits = new NativeArray<XRRaycastHit>(nbARPlane, allocator);
 
                 RaycastHit hit;
                 for (int i = 0; i < internalHits.Length; ++i)
                 {
                     hit = internalHits[i];
+                    if (internalHits[i].transform.GetComponent<ARPlane>() == null) continue;
+                    
                     hits[i] = new XRRaycastHit
                     {
                         trackableId = hit.transform.GetComponent<ARPlane>().trackableId,
@@ -83,14 +90,21 @@ namespace FlatPixel.XR.Mock
                 Ray ray = m_mainCam.ViewportPointToRay(screenPoint);
                 RaycastHit[] internalHits = Physics.RaycastAll(ray, 100.0f);
 
+                int nbARPlane = 0;
+                for (int i = 0; i < internalHits.Length; ++i)
+                    if (internalHits[i].transform.GetComponent<ARPlane>() != null)
+                        nbARPlane++;
+
                 var originTransform = m_ARSessionOrigin.camera != null ? m_ARSessionOrigin.camera.transform : m_ARSessionOrigin.trackablesParent;
 
-                NativeArray<XRRaycastHit> hits = new NativeArray<XRRaycastHit>(internalHits.Length, allocator);
+                NativeArray<XRRaycastHit> hits = new NativeArray<XRRaycastHit>(nbARPlane, allocator);
 
                 RaycastHit hit;
                 for (int i = 0; i < internalHits.Length; ++i)
                 {
                     hit = internalHits[i];
+                    if (internalHits[i].transform.GetComponent<ARPlane>() == null) continue;
+
                     hits[i] = new XRRaycastHit
                     {
                         trackableId = hit.transform.GetComponent<ARPlane>().trackableId,
