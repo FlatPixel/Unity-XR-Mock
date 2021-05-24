@@ -413,6 +413,132 @@ namespace FlatPixel.XR.Mock
 
         #endregion
 
+        #region Faces APIs
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Face
+        {
+            public TrackableId m_TrackableId;
+            public Pose m_Pose;
+            public TrackingState m_TrackingState;
+            public IntPtr m_NativePtr;
+            public Pose m_LeftEyePose;
+            public Pose m_RightEyePose;
+            public Vector3 m_FixationPoint;
+        }
+
+        public class FaceInfo
+        {
+            public TrackableId id;
+            public Pose pose;
+            public TrackingState trackingState;
+            public IntPtr nativePtr;
+            public Pose leftEyePose;
+            public Pose rightEyePose;
+            public Vector3 fixationPoint;
+
+            public Face ToFace(XRFace defaultFace)
+            {
+                return new Face
+                {
+                    m_FixationPoint = fixationPoint,
+                    m_TrackableId = id,
+                    m_Pose = pose,
+                    m_TrackingState = trackingState,
+                    m_LeftEyePose = leftEyePose,
+                    m_RightEyePose = rightEyePose,
+                    m_NativePtr = defaultFace.nativePtr
+                };
+            }
+        }
+
+        public static void UnityXRMock_setFaceData(
+            TrackableId id, Pose pose, Pose leftEye, Pose rightEye,
+            TrackingState trackingState)
+        {
+            if (!s_faces.ContainsKey(id) || s_addedFaces.ContainsKey(id))
+            {
+                if (!s_faces.ContainsKey(id))
+                {
+                    s_faces[id] = new FaceInfo()
+                    {
+                        id = id
+                    };
+                }
+
+                s_addedFaces[id] = s_faces[id];
+            }
+            else
+            {
+                s_updatedFaces[id] = s_faces[id];
+            }
+
+            var faceInfo = s_faces[id];
+            faceInfo.pose = pose;
+            faceInfo.leftEyePose = leftEye;
+            faceInfo.rightEyePose = rightEye;
+            faceInfo.trackingState = trackingState;
+        }
+
+        public static void UnityXRMock_setFaceTrackingState(TrackableId id, TrackingState trackingState)
+        {
+            if (!s_faces.ContainsKey(id) || s_addedFaces.ContainsKey(id))
+            {
+                if (!s_faces.ContainsKey(id))
+                {
+                    s_faces[id] = new FaceInfo();
+                }
+
+                s_addedFaces[id] = s_faces[id];
+            }
+            else
+            {
+                s_updatedFaces[id] = s_faces[id];
+            }
+
+            var faceInfo = s_faces[id];
+            faceInfo.trackingState = trackingState;
+        }
+
+        public static void UnityXRMock_removeFace(TrackableId id)
+        {
+            if (s_faces.ContainsKey(id))
+            {
+                if (!s_addedFaces.Remove(id))
+                {
+                    s_removedFaces[id] = s_faces[id];
+                }
+
+                s_faces.Remove(id);
+                s_updatedFaces.Remove(id);
+            }
+        }
+
+        public static void UnityXRMock_consumedFacesChanges()
+        {
+            s_addedFaces.Clear();
+            s_updatedFaces.Clear();
+            s_removedFaces.Clear();
+        }
+
+        public static void UnityXRMock_facesReset()
+        {
+            UnityXRMock_consumedFacesChanges();
+            s_faces.Clear();
+        }
+
+        private readonly static Dictionary<TrackableId, FaceInfo> s_faces = new Dictionary<TrackableId, FaceInfo>();
+        private readonly static Dictionary<TrackableId, FaceInfo> s_addedFaces = new Dictionary<TrackableId, FaceInfo>();
+        private readonly static Dictionary<TrackableId, FaceInfo> s_updatedFaces = new Dictionary<TrackableId, FaceInfo>();
+        private readonly static Dictionary<TrackableId, FaceInfo> s_removedFaces = new Dictionary<TrackableId, FaceInfo>();
+
+        public static IDictionary<TrackableId, FaceInfo> faces => s_faces;
+        public static IReadOnlyCollection<FaceInfo> addedFaces => s_addedFaces.Values;
+        public static IReadOnlyCollection<FaceInfo> updatedFaces => s_updatedFaces.Values;
+        public static IReadOnlyCollection<FaceInfo> removedFaces => s_removedFaces.Values;
+
+        #endregion
+
         public static void UnityXRMock_setRaycastHits(
             XRRaycastHit[] hits, int size)
         {

@@ -8,7 +8,6 @@ namespace FlatPixel.XR.Mock
     /// Holds settings that are used to configure the XRMock Plugin.
     /// </summary>
     [System.Serializable]
-    [XRConfigurationData("XRMock", "UnityEditor.XR.Mock.XRMockSettings")]
     public class XRMockSettings : ScriptableObject
     {
         /// <summary>

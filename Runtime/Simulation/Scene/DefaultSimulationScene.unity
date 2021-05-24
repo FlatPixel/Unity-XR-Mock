@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414736, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,8 +118,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    maxJobWorkers: 0
-    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -199,6 +197,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 582195433}
     m_Modifications:
+    - target: {fileID: 1560059827709880489, guid: 088a171ae9adf48019e73789bad2b982,
+        type: 3}
+      propertyPath: m_HullChangeProbability
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1560059827709880489, guid: 088a171ae9adf48019e73789bad2b982,
+        type: 3}
+      propertyPath: m_TrackingLostProbability
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5575595879489505146, guid: 088a171ae9adf48019e73789bad2b982,
         type: 3}
       propertyPath: m_Name
@@ -437,7 +445,6 @@ Mesh:
   m_MeshMetrics[1]: 1
   m_MeshOptimizationFlags: 1
   m_StreamData:
-    serializedVersion: 2
     offset: 0
     size: 0
     path: 
@@ -498,6 +505,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 582195433}
     m_Modifications:
+    - target: {fileID: 1560059827709880489, guid: 088a171ae9adf48019e73789bad2b982,
+        type: 3}
+      propertyPath: m_HullChangeProbability
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1560059827709880489, guid: 088a171ae9adf48019e73789bad2b982,
+        type: 3}
+      propertyPath: m_TrackingLostProbability
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5575595879489505146, guid: 088a171ae9adf48019e73789bad2b982,
         type: 3}
       propertyPath: m_Name
@@ -821,7 +838,6 @@ Mesh:
   m_MeshMetrics[1]: 1
   m_MeshOptimizationFlags: 1
   m_StreamData:
-    serializedVersion: 2
     offset: 0
     size: 0
     path: 
@@ -832,6 +848,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 582195433}
     m_Modifications:
+    - target: {fileID: 1560059827709880489, guid: 088a171ae9adf48019e73789bad2b982,
+        type: 3}
+      propertyPath: m_HullChangeProbability
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1560059827709880489, guid: 088a171ae9adf48019e73789bad2b982,
+        type: 3}
+      propertyPath: m_TrackingLostProbability
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5575595879489505146, guid: 088a171ae9adf48019e73789bad2b982,
         type: 3}
       propertyPath: m_Name
@@ -1070,7 +1096,6 @@ Mesh:
   m_MeshMetrics[1]: 1
   m_MeshOptimizationFlags: 1
   m_StreamData:
-    serializedVersion: 2
     offset: 0
     size: 0
     path: 

@@ -65,18 +65,20 @@ namespace FlatPixel.XR.Mock
                 NativeArray<XRRaycastHit> hits = new NativeArray<XRRaycastHit>(nbARPlane, allocator);
 
                 RaycastHit hit;
+                int index = 0;
                 for (int i = 0; i < internalHits.Length; ++i)
                 {
                     hit = internalHits[i];
                     if (internalHits[i].transform.GetComponent<ARPlane>() == null) continue;
                     
-                    hits[i] = new XRRaycastHit
+                    hits[index] = new XRRaycastHit
                     {
                         trackableId = hit.transform.GetComponent<ARPlane>().trackableId,
                         pose = new Pose(originTransform.parent.InverseTransformPoint(hit.point), Quaternion.FromToRotation(Vector3.up, hit.normal)),
                         distance = hit.distance / originTransform.parent.lossyScale.x,
                         hitType = TrackableType.PlaneWithinPolygon
                     };
+                    index++;
                 }
 
                 return hits;
@@ -100,18 +102,21 @@ namespace FlatPixel.XR.Mock
                 NativeArray<XRRaycastHit> hits = new NativeArray<XRRaycastHit>(nbARPlane, allocator);
 
                 RaycastHit hit;
+                int index = 0;
                 for (int i = 0; i < internalHits.Length; ++i)
                 {
                     hit = internalHits[i];
                     if (internalHits[i].transform.GetComponent<ARPlane>() == null) continue;
 
-                    hits[i] = new XRRaycastHit
+                    hits[index] = new XRRaycastHit
                     {
                         trackableId = hit.transform.GetComponent<ARPlane>().trackableId,
                         pose = new Pose(originTransform.parent.InverseTransformPoint(hit.point), Quaternion.FromToRotation(Vector3.up, hit.normal)),
                         distance = hit.distance / originTransform.parent.lossyScale.x,
                         hitType = TrackableType.PlaneWithinPolygon
                     };
+
+                    index++;
                 }
 
                 return hits;

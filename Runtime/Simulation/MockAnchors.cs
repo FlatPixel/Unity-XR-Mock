@@ -6,22 +6,19 @@ using UnityEngine.XR.ARFoundation;
 
 namespace FlatPixel.XR.Mock.Example
 {
-    public class SimulateAnchors : MonoBehaviour
+    public class MockAnchors : MockTrackable
     {
-        [SerializeField]
-        ARAnchorManager _anchorManager;
-
         [SerializeField]
         int m_Count = 4;
 
         [SerializeField]
         float m_Radius = 5f;
 
-        List<ARAnchor> _anchors;
+        List<TrackableId> _anchors;
 
         IEnumerator Start()
         {
-            _anchors = new List<ARAnchor>();
+            _anchors = new List<TrackableId>();
 
             yield return new WaitForSeconds(1f);
 
@@ -30,9 +27,9 @@ namespace FlatPixel.XR.Mock.Example
                 var position = Random.insideUnitSphere * m_Radius + transform.position;
                 var rotation = Quaternion.AngleAxis(Random.Range(0, 360), Random.onUnitSphere);
 
-                var referencePoint = _anchorManager.AddAnchor(new Pose(position, rotation));
-                if (referencePoint != null)
-                    _anchors.Add(referencePoint);
+                var trackableId = AnchorApi.Attach(new Pose(position, rotation));
+                if (trackableId != null)
+                    _anchors.Add(trackableId);
 
                 yield return new WaitForSeconds(.5f);
             }
@@ -41,23 +38,24 @@ namespace FlatPixel.XR.Mock.Example
 
             while (enabled)
             {
-                if (transform.hasChanged)
-                {
-                    var delta = transform.position - previousPosition;
-                    previousPosition = transform.position;
+               if (transform.hasChanged)
+               {
+                   var delta = transform.position - previousPosition;
+                   previousPosition = transform.position;
 
-                    foreach (var referencePoint in _anchors)
-                    {
-                        var pose = new Pose(referencePoint.transform.position + delta, referencePoint.transform.rotation);
-                        AnchorApi.Update(referencePoint.trackableId, pose, TrackingState.Tracking);
+                   foreach (var trackableId in _anchors)
+                   {
+                       NativeApi.AnchorInfo anchor = NativeApi.anchors[trackableId];
+                       var pose = new Pose(anchor.pose.position + delta, anchor.pose.rotation);
+                       AnchorApi.Update(trackableId, pose, TrackingState.Tracking);
 
-                        yield return new WaitForSeconds(.5f);
-                    }
+                       yield return new WaitForSeconds(.5f);
+                   }
 
-                    transform.hasChanged = false;
-                }
+                   transform.hasChanged = false;
+               }
 
-                yield return null;
+               yield return null;
             }
         }
     }

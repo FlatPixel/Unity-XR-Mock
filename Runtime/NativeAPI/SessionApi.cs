@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,9 @@ namespace FlatPixel.XR.Mock
     {
         public static GameObject _arMockEditorPrefab = null;
         public static GameObject _arMockEditor = null;
+
+        [HideInInspector]
+        public static string _simulationScenePath = "Packages/com.flatpixel.xr-mock/Runtime/Simulation/Scene/DefaultSimulationScene.unity";
         private static Scene _arMockSimulationScene;
 
         public static TrackingState trackingState
@@ -30,7 +34,22 @@ namespace FlatPixel.XR.Mock
             //_arMockEditor.SetActive(true);
 
             LoadSceneParameters sceneParams = new LoadSceneParameters(LoadSceneMode.Additive);
-            _arMockSimulationScene = EditorSceneManager.LoadSceneInPlayMode("Packages/com.flatpixel.xr-mock/Runtime/Simulation/Scene/DefaultSimulationScene.unity", sceneParams);
+
+            SimulationScenePath scenePathSO = null;
+            // Find all assets named SceneSimulationPath
+            string[] guids = AssetDatabase.FindAssets("SceneSimulationPath");
+            if (guids.Length >= 1)
+            {
+                string soAssetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
+                scenePathSO = (SimulationScenePath)AssetDatabase.LoadAssetAtPath(soAssetPath, typeof(SimulationScenePath));
+            }
+
+            if (scenePathSO != null)
+                _simulationScenePath = scenePathSO.scenePath;
+
+            Debug.Log("_simulationScenePath: " + _simulationScenePath);
+            _arMockSimulationScene = EditorSceneManager.LoadSceneInPlayMode(_simulationScenePath, sceneParams);
+
             return true;
         }
 
@@ -39,7 +58,7 @@ namespace FlatPixel.XR.Mock
             Debug.Log("XRMock::Stop Session");
             //Object.Destroy(_arMockEditor);
             //_arMockEditor = null;
-            SceneManager.UnloadSceneAsync("Packages/com.flatpixel.xr-mock/Samples/ScenesSimulation/HorizontalAndVerticalPlanesSimulation.unity");
+            SceneManager.UnloadSceneAsync(_arMockSimulationScene);
 
             return false;
         }
