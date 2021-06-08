@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.XR.ARSubsystems;
@@ -37,9 +38,31 @@ namespace FlatPixel.XR.Mock
 
             public MockProvider() { }
 
+            public override Feature requestedFeatures => NativeApi.GetRequestedFeatures();
+
             public override Promise<SessionInstallationStatus> InstallAsync() => new SessionInstallationPromise();
 
             public override Promise<SessionAvailability> GetAvailabilityAsync() => new SessionAvailabilityPromise();
+
+            public override unsafe NativeArray<ConfigurationDescriptor> GetConfigurationDescriptors(Allocator allocator)
+            {
+                var descriptors = new NativeArray<ConfigurationDescriptor>(2, allocator);
+
+                Feature capabilities1 = Feature.WorldFacingCamera
+                                        | Feature.PositionAndRotation
+                                        | Feature.PlaneTracking
+                                        | Feature.Raycast
+                                        | Feature.PointCloud;
+                descriptors[0] = new ConfigurationDescriptor(IntPtr.Zero + 1, capabilities1, 0);
+                
+                Feature capabilities2 = Feature.UserFacingCamera
+                                        | Feature.PositionAndRotation
+                                        | Feature.FaceTracking
+                                        | Feature.Raycast;
+                descriptors[1] = new ConfigurationDescriptor(IntPtr.Zero + 2, capabilities2, 2);
+                
+                return descriptors;
+            }
 
 #if UNITY_2020_2_OR_NEWER
             public override void Start() => SessionApi.Start();
@@ -51,7 +74,7 @@ namespace FlatPixel.XR.Mock
             public override void Pause() => SessionApi.Stop();
 #endif
 
-            public override void Update(XRSessionUpdateParams updateParams)
+            public override void Update(XRSessionUpdateParams updateParams, Configuration configuration)
             {
                 if (this.trackingState == TrackingState.Limited && !this.isPaused)
                 {

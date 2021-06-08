@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.XR.ARSubsystems;
 
 namespace FlatPixel.XR.Mock.Example
 {
@@ -40,14 +41,62 @@ namespace FlatPixel.XR.Mock.Example
 
         Vector3 m_PreviousMousePosition;
 
+        [System.NonSerialized]
+        Feature m_lastCameraFacing = Feature.None;
+        
+        [System.NonSerialized]
+        Color worldColor = new Color(0.5f, 0.25f, 0.6f, 1f);
+        [System.NonSerialized]
+        Color userColor = new Color(1f, 0.9f, 0.2f, 1f);
+
         void Move(Vector3 direction)
         {
             transform.position += direction * (Time.deltaTime * m_MoveSpeed);
         }
 
+        void ChangeCameraFacing()
+        {
+            transform.RotateAround(transform.position, transform.up, 180);
+
+            switch (CameraApi.currentFacingDirection)
+            {
+                case Feature.WorldFacingCamera:
+                    gameObject.name = "Mock Camera (Wold Facing)";
+                    Camera.main.backgroundColor = worldColor;
+                    break;
+                case Feature.UserFacingCamera:
+                    gameObject.name = "Mock Camera (User Facing)";
+                    Camera.main.backgroundColor = userColor;
+                    break;
+                default:
+                    gameObject.name = "Mock Camera (None)";
+                    break;
+            }
+
+            m_lastCameraFacing = CameraApi.currentFacingDirection;
+        }
+
+        void OnEnable()
+        {
+            m_lastCameraFacing = CameraApi.currentFacingDirection;
+
+            switch (CameraApi.currentFacingDirection)
+            {
+                case Feature.WorldFacingCamera:
+                    gameObject.name = "Mock Camera (Wold Facing)";
+                    break;
+                case Feature.UserFacingCamera:
+                    gameObject.name = "Mock Camera (User Facing)";
+                    break;
+                default:
+                    gameObject.name = "Mock Camera (None)";
+                    break;
+            }
+        }
+
         void Update()
         {
-            int mouseButton = (int)m_LookMouseButton;
+            int mouseButton = (int) m_LookMouseButton;
             if (Input.GetMouseButton(mouseButton))
             {
                 if (Input.GetMouseButtonDown(mouseButton))
@@ -79,6 +128,9 @@ namespace FlatPixel.XR.Mock.Example
                 Move(transform.forward);
             if (Input.GetAxis("Mouse ScrollWheel") < 0f)
                 Move(-transform.forward);
+
+            if (CameraApi.currentFacingDirection != m_lastCameraFacing)
+                ChangeCameraFacing();
 
             InputApi.pose = new Pose(transform.position, transform.rotation);
         }

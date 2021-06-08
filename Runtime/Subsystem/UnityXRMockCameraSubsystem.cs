@@ -57,6 +57,46 @@ namespace FlatPixel.XR.Mock
 
             public override bool permissionGranted => CameraApi.permissionGranted;
 
+            /// <summary>
+            /// Get the camera facing direction.
+            /// </summary>
+            public override Feature currentCamera => CameraApi.currentFacingDirection;
+
+            /// <summary>
+            /// Get the currently active camera or set the requested camera
+            /// </summary>
+            public override Feature requestedCamera
+            {
+                get => NativeApi.GetRequestedFeatures();
+                set
+                {
+                    NativeApi.SetFeatureRequested(Feature.AnyCamera, false);
+                    NativeApi.SetFeatureRequested(value, true);
+                }
+            }
+
+            /// <summary>
+            /// Get or set the focus mode for the camera.
+            /// </summary>
+            public override bool autoFocusRequested
+            {
+                get => NativeApi.GetRequestedFeatures().All(Feature.AutoFocus);
+                set => NativeApi.SetFeatureRequested(Feature.AutoFocus, value);
+            }
+
+            /// <summary>
+            /// Get or set the light estimation mode.
+            /// </summary>
+            public override Feature requestedLightEstimation
+            {
+                get => NativeApi.GetRequestedFeatures();
+                set
+                {
+                    NativeApi.SetFeatureRequested(Feature.AnyLightEstimation, false);
+                    NativeApi.SetFeatureRequested(value, true);
+                }
+            }
+
             public override void Start()
             {
                 this.ResetState();

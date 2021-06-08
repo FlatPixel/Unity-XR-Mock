@@ -71,6 +71,34 @@ namespace FlatPixel.XR.Mock
             LogNotImplemented();
         }
 
+        #region Features
+
+        public static Feature requestedFeatures = Feature.None;
+
+        public static Feature GetRequestedFeatures()
+        {
+            return requestedFeatures;
+        }
+
+        public static void SetFeatureRequested(Feature feature, bool enabled)
+        {
+            if (enabled)
+            {
+                requestedFeatures |= feature;
+
+                if (feature == Feature.WorldFacingCamera)
+                    CameraApi.currentFacingDirection = Feature.WorldFacingCamera;
+                if (feature == Feature.UserFacingCamera)
+                    CameraApi.currentFacingDirection = Feature.UserFacingCamera;
+            }
+            else
+            {
+                requestedFeatures &= ~feature;
+            }
+        }
+
+        #endregion
+
         #region CameraProvider
         public static void UnityXRMock_setLightEstimation(SetLightEstimationDelegate fp)
         {

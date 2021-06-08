@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.XR.ARSubsystems;
 
 namespace FlatPixel.XR.Mock
 {
     public static class CameraApi
     {
         public static bool permissionGranted { get; set; } = true;
+
+        public static Feature currentFacingDirection { get; set; } = Feature.None;
 
         public static Matrix4x4? projectionMatrix
         {

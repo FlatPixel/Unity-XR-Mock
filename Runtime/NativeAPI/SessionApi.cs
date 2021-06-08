@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.ARSubsystems;
 
@@ -27,15 +27,8 @@ namespace FlatPixel.XR.Mock
         public static bool Start()
         {
             Debug.Log("XRMock::Start Session");
-            //if (_arMockEditor == null)
-            //    _arMockEditorPrefab = (GameObject)UnityEditor.AssetDatabase.LoadAssetAtPath("Packages/com.flatpixel.xr-mock/Runtime/Simulation/Prefabs/AR Mock Editor.prefab", typeof(GameObject));
-
-            //_arMockEditor = Object.Instantiate(_arMockEditorPrefab);
-            //_arMockEditor.SetActive(true);
-
-            LoadSceneParameters sceneParams = new LoadSceneParameters(LoadSceneMode.Additive);
-
             SimulationScenePath scenePathSO = null;
+
             // Find all assets named SceneSimulationPath
             string[] guids = AssetDatabase.FindAssets("SceneSimulationPath");
             if (guids.Length >= 1)
@@ -44,10 +37,14 @@ namespace FlatPixel.XR.Mock
                 scenePathSO = (SimulationScenePath)AssetDatabase.LoadAssetAtPath(soAssetPath, typeof(SimulationScenePath));
             }
 
+            // scenePathSO = Resources.Load<SimulationScenePath>("SceneSimulationPath");
+
             if (scenePathSO != null)
                 _simulationScenePath = scenePathSO.scenePath;
 
             Debug.Log("_simulationScenePath: " + _simulationScenePath);
+            LoadSceneParameters sceneParams = new LoadSceneParameters(LoadSceneMode.Additive);
+            // _arMockSimulationScene = SceneManager.LoadScene(_simulationScenePath, sceneParams);
             _arMockSimulationScene = EditorSceneManager.LoadSceneInPlayMode(_simulationScenePath, sceneParams);
 
             return true;

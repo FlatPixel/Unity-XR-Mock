@@ -1,6 +1,6 @@
 {
   "name": "com.flatpixel.xr-mock",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "displayName": "XR Mock",
   "description": "The in-editor AR simulation that Unity has (n)ever made...",
   "unity": "2019.4",
@@ -33,7 +33,8 @@
     "Mock",
     "Simulation",
     "ARKit",
-    "ARCore"
+    "ARCore",
+    "ARFace"
   ],
   "author": {
     "name": "Flat Pixel - Adrien Mgm",

@@ -206,6 +206,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TrackingLostProbability: 0.01
+  mockCamera: {fileID: 0}
+  offsetCamera: {x: 0, y: 0, z: 0.5}
   leftEye: {fileID: 4962873888377005754}
   rightEye: {fileID: 297063497846901361}
 --- !u!33 &1974364721225610706
