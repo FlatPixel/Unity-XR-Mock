@@ -369,6 +369,26 @@ namespace FlatPixel.XR.Mock
             }
         }
 
+        public static void UnityXRMock_setAnchorTrackingState(TrackableId id, TrackingState trackingState)
+        {
+            if (!s_anchors.ContainsKey(id) || s_addedAnchors.ContainsKey(id))
+            {
+                if (!s_anchors.ContainsKey(id))
+                {
+                    s_anchors[id] = new AnchorInfo();
+                }
+
+                s_addedAnchors[id] = s_anchors[id];
+            }
+            else
+            {
+                s_updatedAnchors[id] = s_anchors[id];
+            }
+
+            var anchorInfo = s_anchors[id];
+            anchorInfo.trackingState = trackingState;
+        }
+
         public static TrackableId UnityXRMock_attachAnchor(TrackableId trackableId, Pose pose)
         {
             if (trackableId == TrackableId.invalidId)

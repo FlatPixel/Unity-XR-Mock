@@ -59,5 +59,22 @@ namespace FlatPixel.XR.Mock
 
             return false;
         }
+
+        public static bool Reset()
+        {
+            if (_arMockSimulationScene.IsValid() == false) return false;
+
+            GameObject[] gameObjects = _arMockSimulationScene.GetRootGameObjects();
+
+            for (int i = 0; i < gameObjects.Length; i++)
+            {
+                if (gameObjects[i].name == "SessionSimulation")
+                {
+                    gameObjects[i].GetComponent<Example.SimulateSession>().Reset();
+                }
+            }
+
+            return true;
+        }
     }
 }

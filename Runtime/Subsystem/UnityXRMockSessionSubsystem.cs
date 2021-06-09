@@ -74,6 +74,11 @@ namespace FlatPixel.XR.Mock
             public override void Pause() => SessionApi.Stop();
 #endif
 
+            public override void Reset()
+            {
+                SessionApi.Reset();
+            }
+
             public override void Update(XRSessionUpdateParams updateParams, Configuration configuration)
             {
                 if (this.trackingState == TrackingState.Limited && !this.isPaused)

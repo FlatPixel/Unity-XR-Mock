@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 
@@ -25,5 +27,16 @@ namespace FlatPixel.XR.Mock
         {
             NativeApi.UnityXRMock_removeAnchor(trackableId);
         }
+
+        public static void SetTrackingState(TrackableId id, TrackingState trackingState)
+        {
+            if (!s_TrackingStates.ContainsKey(id))
+                return;
+
+            s_TrackingStates[id] = trackingState;
+            NativeApi.UnityXRMock_setAnchorTrackingState(id, s_TrackingStates[id]);
+        }
+
+        static Dictionary<TrackableId, TrackingState> s_TrackingStates = new Dictionary<TrackableId, TrackingState>();
     }
 }

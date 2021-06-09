@@ -11,82 +11,70 @@ namespace FlatPixel.XR.Mock.Example
         TrackingState m_TrackingState = TrackingState.None;
 
         [Space()]
-        [SerializeField]
-        private List<MockTrackable> m_trackables;
-
-        float m_LastTime;
-        enum State
-        {
-            Uninitialized,
-            Initialized,
-            Paused,
-            WaitingForFirstTrackable,
-            WaitingToAddRemainingTrackables,
-            Finished
-        }
-
-        [Header("Simulation States (handle trackable discovery)")]
-        [SerializeField]
-        State m_InnerState;
+        private List<MockTrackable> m_worldTrackables;
+        private List<MockTrackable> m_faceTrackables;
 
         [Space()]
         [SerializeField]
-        [Tooltip("Array of times to wait in each inner state. Index of the duration array correspond to the index of the inner state. (1 sec by default)")]
-        float[] m_DurationPerInnerState;
+        private float m_InitializationDuration = 2;
+        private float m_LastTime = 0;
 
         private void Start()
         {
-            m_trackables = new List<MockTrackable>();
+            m_worldTrackables = new List<MockTrackable>();
+            m_faceTrackables = new List<MockTrackable>();
 
             foreach (var trackable in GetComponentsInChildren<MockTrackable>(true))
             {
                 trackable.gameObject.SetActive(false);
-                m_trackables.Add(trackable);
+
+                if (trackable is MockFace)
+                    m_faceTrackables.Add(trackable);
+                else
+                    m_worldTrackables.Add(trackable);
             }
+        }
+
+        public void Reset()
+        {
+            foreach (var trackable in GetComponentsInChildren<MockTrackable>(true))
+                trackable.gameObject.SetActive(false);
+
+            m_TrackingState = TrackingState.None;
         }
 
         void Update()
         {
-            SessionApi.trackingState = m_TrackingState;
-
-            float stateDuration = 1;
-            int indexEnum = (int)m_InnerState;
-            if (m_DurationPerInnerState != null && indexEnum < m_DurationPerInnerState.Length)
-                stateDuration = m_DurationPerInnerState[indexEnum];
-
-            switch (m_InnerState)
+            switch (m_TrackingState)
             {
-                case State.Uninitialized:
-                    m_InnerState = State.Initialized;
-                    m_LastTime = Time.time;
-                    break;
-                case State.Initialized:
-                    m_InnerState = State.WaitingForFirstTrackable;
+                case TrackingState.None:
                     m_TrackingState = TrackingState.Limited;
                     m_LastTime = Time.time;
                     break;
-                case State.WaitingForFirstTrackable:
-                    if (Time.time - m_LastTime > stateDuration)
+                case TrackingState.Limited:
+                    if (Time.time - m_LastTime > m_InitializationDuration)
                     {
-                        if (m_trackables.Count > 0)
-                            m_trackables[0].gameObject.SetActive(true);
-
-                        m_InnerState = State.WaitingToAddRemainingTrackables;
-                        m_LastTime = Time.time;
-                    }
-                    break;
-                case State.WaitingToAddRemainingTrackables:
-                    if (Time.time - m_LastTime > stateDuration)
-                    {
-                        for (int i = 1; i < m_trackables.Count; i++)
-                            m_trackables[i].gameObject.SetActive(true);
-
-                        m_InnerState = State.Finished;
                         m_TrackingState = TrackingState.Tracking;
                         m_LastTime = Time.time;
                     }
                     break;
+                case TrackingState.Tracking:
+                    if (CameraApi.currentFacingDirection == Feature.WorldFacingCamera)
+                        foreach (var trackable in m_worldTrackables)
+                            if (trackable.gameObject.activeSelf == false
+                            && Time.time - m_LastTime > trackable.untrackedDuration)
+                                trackable.gameObject.SetActive(true);
+                    if (CameraApi.currentFacingDirection == Feature.UserFacingCamera)
+                        foreach (var trackable in m_faceTrackables)
+                            if (trackable.gameObject.activeSelf == false
+                            && Time.time - m_LastTime > trackable.untrackedDuration)
+                                trackable.gameObject.SetActive(true);
+                    break;
+                default:
+                    break;
             }
+
+            SessionApi.trackingState = m_TrackingState;
         }
     }
 }

@@ -6,6 +6,7 @@ namespace FlatPixel.XR.Mock.Example
 {
     public class MockFace : MockTrackable
     {
+        [Header("Face parameters")]
         [SerializeField]
         float m_TrackingLostProbability = 0.01f;
 
@@ -17,8 +18,6 @@ namespace FlatPixel.XR.Mock.Example
 
         public Pose poseLeftEye { get { return new Pose(leftEye.position, leftEye.rotation); } }
         public Pose poseRightEye { get { return new Pose(rightEye.position, rightEye.rotation); } }
-
-        private TrackableId id;
 
         private void OnEnable()
         {
@@ -46,19 +45,24 @@ namespace FlatPixel.XR.Mock.Example
 
             transform.LookAt(mockCamera.transform, mockCamera.transform.up);
 
-            id = FaceApi.Add(pose, poseLeftEye, poseRightEye);
-            FaceApi.SetTrackingState(id, TrackingState.Tracking);
+            trackableId = FaceApi.Add(pose, poseLeftEye, poseRightEye);
+
+            tracking = TrackingState.Tracking;
+            FaceApi.SetTrackingState(trackableId, tracking);
         }
 
         private void OnDisable()
         {
-            FaceApi.SetTrackingState(id, TrackingState.None);
-            FaceApi.Remove(id);
+            tracking = TrackingState.None;
+            FaceApi.SetTrackingState(trackableId, tracking);
+
+            FaceApi.Remove(trackableId);
         }
 
         private void Update()
         {
-            if (enabled == false) return;
+            FaceApi.SetTrackingState(trackableId, tracking);
+            if (tracking != TrackingState.Tracking) return;
 
             switch (CameraApi.currentFacingDirection)
             {
@@ -83,8 +87,7 @@ namespace FlatPixel.XR.Mock.Example
             }
 
             transform.LookAt(mockCamera.transform, mockCamera.transform.up);
-
-            FaceApi.Update(id, pose, poseLeftEye, poseRightEye);
+            FaceApi.Update(trackableId, pose, poseLeftEye, poseRightEye);
         }
     }
 }

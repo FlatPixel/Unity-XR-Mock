@@ -12,6 +12,7 @@ namespace FlatPixel.XR.Mock.Example
         Mesh m_mesh;
         MeshFilter m_meshFilter = null;
 
+        [Header("Plane parameters")]
         [SerializeField]
         float m_Radius = 1f;
 
@@ -26,6 +27,9 @@ namespace FlatPixel.XR.Mock.Example
 
         [SerializeField]
         int m_NumPoints = 10;
+
+        Vector2[] points;
+        Vector2[] velocities;
 
         bool IsLeftOfLine(Vector2 point, Vector2 a, Vector2 b)
         {
@@ -78,12 +82,12 @@ namespace FlatPixel.XR.Mock.Example
             m_mesh = new Mesh();
         }
 
-        IEnumerator Start()
+        private void OnEnable()
         {
             m_meshFilter = GetComponent<MeshFilter>();
 
-            var points = new Vector2[m_NumPoints];
-            var velocities = new Vector2[m_NumPoints];
+            points = new Vector2[m_NumPoints];
+            velocities = new Vector2[m_NumPoints];
 
             for (int i = 0; i < points.Length; ++i)
             {
@@ -91,42 +95,52 @@ namespace FlatPixel.XR.Mock.Example
                 velocities[i] = Random.insideUnitCircle * m_Speed;
             }
 
-            var planeId = PlaneApi.Add(pose, GenerateConvexHull(points));
+            trackableId = PlaneApi.Add(pose, GenerateConvexHull(points));
 
             if (m_meshFilter != null)
-                if (ARPlaneMeshGenerators.GenerateMesh(m_mesh, new Pose(transform.localPosition, transform.localRotation), NativeApi.planes[planeId].boundaryPoints))
+                if (ARPlaneMeshGenerators.GenerateMesh(m_mesh, new Pose(transform.localPosition, transform.localRotation), NativeApi.planes[trackableId].boundaryPoints))
                     m_meshFilter.sharedMesh = m_mesh;
 
-            while (enabled)
+            tracking = TrackingState.Tracking;
+            PlaneApi.SetTrackingState(trackableId, tracking);
+        }
+
+        private void OnDisable()
+        {
+            tracking = TrackingState.None;
+            PlaneApi.SetTrackingState(trackableId, tracking);
+
+            PlaneApi.Remove(trackableId);
+        }
+
+        private void Update()
+        {
+            PlaneApi.SetTrackingState(trackableId, tracking);
+            if (tracking != TrackingState.Tracking) return;
+
+            var hullChanged = false;
+            if (Random.value < m_HullChangeProbability)
             {
-                var hullChanged = false;
-                if (Random.value < m_HullChangeProbability)
+                for (int i = 0; i < points.Length; ++i)
                 {
-                    for (int i = 0; i < points.Length; ++i)
-                    {
-                        if (points[i].magnitude > m_Radius && Vector3.Dot(points[i], velocities[i]) > 0)
-                            velocities[i] = -velocities[i];
+                    if (points[i].magnitude > m_Radius && Vector3.Dot(points[i], velocities[i]) > 0)
+                        velocities[i] = -velocities[i];
 
-                        points[i] += velocities[i] * Time.deltaTime;
-                    }
-
-                    hullChanged = true;
+                    points[i] += velocities[i] * Time.deltaTime;
                 }
 
-                if (hullChanged || transform.hasChanged)
-                    PlaneApi.Update(planeId, pose, GenerateConvexHull(points));
-
-                transform.hasChanged = false;
-
-                if (Random.value < m_TrackingLostProbability)
-                {
-                    PlaneApi.SetTrackingState(planeId, TrackingState.None);
-                    yield return new WaitForSeconds(1f);
-                    PlaneApi.SetTrackingState(planeId, TrackingState.Tracking);
-                }
-
-                yield return null;
+                hullChanged = true;
             }
+
+            if (hullChanged || transform.hasChanged)
+                PlaneApi.Update(trackableId, pose, GenerateConvexHull(points));
+
+            transform.hasChanged = false;
+
+            if (Random.value < m_TrackingLostProbability)
+                PlaneApi.SetTrackingState(trackableId, TrackingState.None);
+            else
+                PlaneApi.SetTrackingState(trackableId, TrackingState.Tracking);
         }
     }
 }
