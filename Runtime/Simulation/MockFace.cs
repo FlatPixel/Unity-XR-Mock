@@ -19,6 +19,8 @@ namespace FlatPixel.XR.Mock.Example
         public Pose poseLeftEye { get { return new Pose(leftEye.position, leftEye.rotation); } }
         public Pose poseRightEye { get { return new Pose(rightEye.position, rightEye.rotation); } }
 
+        public Mesh mesh;
+
         private void OnEnable()
         {
             switch (CameraApi.currentFacingDirection)
@@ -45,10 +47,12 @@ namespace FlatPixel.XR.Mock.Example
 
             transform.LookAt(mockCamera.transform, mockCamera.transform.up);
 
-            trackableId = FaceApi.Add(pose, poseLeftEye, poseRightEye);
+            trackableId = FaceApi.Add(pose, poseLeftEye, poseRightEye, mesh);
 
             tracking = TrackingState.Tracking;
             FaceApi.SetTrackingState(trackableId, tracking);
+
+            mesh = GetComponent<MeshFilter>().mesh;
         }
 
         private void OnDisable()
@@ -87,7 +91,7 @@ namespace FlatPixel.XR.Mock.Example
             }
 
             transform.LookAt(mockCamera.transform, mockCamera.transform.up);
-            FaceApi.Update(trackableId, pose, poseLeftEye, poseRightEye);
+            FaceApi.Update(trackableId, pose, poseLeftEye, poseRightEye, mesh);
         }
     }
 }
