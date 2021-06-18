@@ -51,7 +51,6 @@ namespace FlatPixel.XR.Mock.Example
 
             tracking = TrackingState.Tracking;
             FaceApi.SetTrackingState(trackableId, tracking);
-
         }
 
         private void OnDisable()
