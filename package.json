@@ -1,6 +1,6 @@
 {
   "name": "com.flatpixel.xr-mock",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "displayName": "XR Mock",
   "description": "The in-editor AR simulation that Unity has (n)ever made...",
   "unity": "2019.4",

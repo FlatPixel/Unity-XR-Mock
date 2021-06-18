@@ -70,6 +70,36 @@ namespace FlatPixel.XR.Mock
                     NativeApi.UnityXRMock_consumedFacesChanges();
                 }
             }
+
+
+            public unsafe override void GetFaceMesh(
+                TrackableId faceId,
+                Allocator allocator,
+                ref XRFaceMesh faceMesh)
+            {
+                if (NativeApi.faces.ContainsKey(faceId) == false || NativeApi.faces[faceId].mesh == null)
+                { 
+                    faceMesh.Dispose();
+                    faceMesh = default(XRFaceMesh);
+                    return;
+                }
+
+                var xrFaceMesh = NativeApi.faces[faceId].mesh;
+                var vertexCount = xrFaceMesh.vertexCount;
+                var triangleCount = xrFaceMesh.triangles.Count();
+
+
+                faceMesh.Resize(
+                        vertexCount,
+                        triangleCount,
+                        XRFaceMesh.Attributes.Normals | XRFaceMesh.Attributes.UVs,
+                        allocator);
+
+                NativeArray<Vector3>.Copy(xrFaceMesh.vertices, faceMesh.vertices, vertexCount);
+                NativeArray<Vector3>.Copy(xrFaceMesh.normals, faceMesh.normals, vertexCount);
+                NativeArray<Vector2>.Copy(xrFaceMesh.uv, faceMesh.uvs, vertexCount);
+                NativeArray<int>.Copy(xrFaceMesh.triangles, faceMesh.indices, triangleCount);
+            }
         }
     }
 }

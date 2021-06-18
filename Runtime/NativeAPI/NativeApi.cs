@@ -484,6 +484,7 @@ namespace FlatPixel.XR.Mock
             public Pose leftEyePose;
             public Pose rightEyePose;
             public Vector3 fixationPoint;
+            public Mesh mesh;
 
             public Face ToFace(XRFace defaultFace)
             {
@@ -501,7 +502,7 @@ namespace FlatPixel.XR.Mock
         }
 
         public static void UnityXRMock_setFaceData(
-            TrackableId id, Pose pose, Pose leftEye, Pose rightEye,
+            TrackableId id, Pose pose, Pose leftEye, Pose rightEye, Mesh mesh,
             TrackingState trackingState)
         {
             if (!s_faces.ContainsKey(id) || s_addedFaces.ContainsKey(id))
@@ -524,7 +525,8 @@ namespace FlatPixel.XR.Mock
             var faceInfo = s_faces[id];
             faceInfo.pose = pose;
             faceInfo.leftEyePose = leftEye;
-            faceInfo.rightEyePose = rightEye;
+            faceInfo.rightEyePose = rightEye; 
+            faceInfo.mesh = mesh;
             faceInfo.trackingState = trackingState;
         }
 
