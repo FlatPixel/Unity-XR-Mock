@@ -46,8 +46,9 @@ namespace FlatPixel.XR.Mock.Example
             }
 
             transform.LookAt(mockCamera.transform, mockCamera.transform.up);
-
+            transform.rotation = Quaternion.Euler(0, 180, 0);
             trackableId = FaceApi.Add(pose, poseLeftEye, poseRightEye, mesh);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
 
             tracking = TrackingState.Tracking;
             FaceApi.SetTrackingState(trackableId, tracking);
@@ -89,7 +90,9 @@ namespace FlatPixel.XR.Mock.Example
             }
 
             transform.LookAt(mockCamera.transform, mockCamera.transform.up);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
             FaceApi.Update(trackableId, pose, poseLeftEye, poseRightEye, mesh);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 }
