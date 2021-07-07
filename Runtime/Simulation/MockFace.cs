@@ -45,10 +45,12 @@ namespace FlatPixel.XR.Mock.Example
                     break;
             }
 
-            transform.LookAt(mockCamera.transform, mockCamera.transform.up);
-            transform.Rotate(0, 180, 0);
+            // Face's forward points at the opposite way of mesh's
+            // 180 Rotation is necessary to make the mesh face the camera
+            transform.rotation = Quaternion.LookRotation(transform.position - mockCamera.transform.position, mockCamera.transform.up);
             trackableId = FaceApi.Add(pose, poseLeftEye, poseRightEye, mesh);
-            transform.Rotate(0, 180, 0);
+
+            
 
             tracking = TrackingState.Tracking;
             FaceApi.SetTrackingState(trackableId, tracking);
@@ -89,10 +91,10 @@ namespace FlatPixel.XR.Mock.Example
                     break;
             }
 
-            transform.LookAt(mockCamera.transform, mockCamera.transform.up);
-            transform.Rotate(0, 180, 0);
+            // Face's forward points at the opposite way of mesh's
+            // 180 Rotation is necessary to make the mesh face the camera
+            transform.rotation = Quaternion.LookRotation(transform.position - mockCamera.transform.position, mockCamera.transform.up);
             FaceApi.Update(trackableId, pose, poseLeftEye, poseRightEye, mesh);
-            transform.Rotate(0, 180, 0);
         }
     }
 }
